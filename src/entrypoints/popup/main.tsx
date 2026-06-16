@@ -1,10 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
-import './style.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+import { ThemeProvider } from "~/contexts/ThemeContext.tsx";
+
+import "./style.css";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>,
 );
