@@ -8,4 +8,11 @@ export default defineConfig({
   vite: () => ({
     plugins: [tailwindcss()],
   }),
+  manifest: {
+    name: "Wikie",
+    description: "Extension that allow you to be on short with wiki world on gaming",
+    version: "0.0.1",
+    permissions: ["storage", "webRequest"],
+    host_permissions: ["https://en.wikipedia.org/*"],
+  },
 });

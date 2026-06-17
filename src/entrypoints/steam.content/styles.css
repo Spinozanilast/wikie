@@ -1,0 +1,72 @@
+:root {
+  --background: #f0f8ff;
+  --foreground: #1a1a2e;
+  --secondary: #007944;
+  --tertiary: #55bddc;
+
+  color-scheme: light dark;
+}
+
+:root.dark {
+  --background: #faf7d7;
+  --foreground: #21161a;
+  --secondary: #cf602b;
+  --tertiary: #f4ad39;
+}
+
+* {
+  font-family: "Pixelify Sans", sans-serif;
+}
+
+.wikie-badge-container {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  bottom: 16px;
+  right: 16px;
+  z-index: 999999;
+  background: var(--background);
+  color: var(--foreground);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--tertiary);
+  transition: opacity 0.2s;
+}
+
+.wikie-wikipedia-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.wikie-wikipedia-badge:hover {
+  opacity: 0.8;
+}
+
+.wikie-wikipedia-badge:has(#wikipedia) {
+  background-color: white;
+  color: black;
+}
+
+.logo {
+  width: 24px;
+  height: 24px;
+}
+
+.app-name {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.wikis {
+  font-size: 18px;
+}

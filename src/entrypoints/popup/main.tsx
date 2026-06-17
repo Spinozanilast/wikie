@@ -4,7 +4,7 @@ import App from "./App.tsx";
 
 import { ThemeProvider } from "~/contexts/ThemeContext.tsx";
 
-import "./style.css";
+import "~/assets/styles.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

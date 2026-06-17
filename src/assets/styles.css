@@ -7,11 +7,13 @@
   --color-foreground: var(--foreground);
   --color-secondary: var(--secondary);
   --color-tertiary: var(--tertiary);
+
+  --radius-2xls: 14px;
 }
 
 :root {
-  --background: #f0f8ff;
-  --foreground: #1a1a2e;
+  --background: #332000;
+  --foreground: #f0ffff;
   --secondary: #007944;
   --tertiary: #55bddc;
 
@@ -32,13 +34,12 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
+  min-width: 440px;
 }
 
 #root {
   font-family: var(--font-pixelify);
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  padding: 0.4rem;
   text-align: center;
 }
