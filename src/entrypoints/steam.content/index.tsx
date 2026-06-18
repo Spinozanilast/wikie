@@ -19,11 +19,7 @@ export default defineContentScript({
         container.append(wrapper);
 
         const root = ReactDOM.createRoot(wrapper);
-        root.render(
-          <React.StrictMode>
-            <SteamBadge />
-          </React.StrictMode>,
-        );
+        root.render(<SteamBadge />);
 
         return { root, wrapper };
       },
@@ -33,7 +29,6 @@ export default defineContentScript({
       },
     });
 
-    console.log("rewrew");
     ui.mount();
   },
 });

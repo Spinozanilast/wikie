@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import WelcomeScreen from "~/components/PopupViews/Welcome";
-import MainScreen from "~/components/PopupViews/Main";
+import WelcomeScreen from "~/components/views/Welcome";
+import MainScreen from "~/components/views/Main";
 
 const WELCOMED_KEY = "wikie-welcomed";
 

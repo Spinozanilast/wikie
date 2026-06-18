@@ -1,49 +1,23 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { extractSteamAppIdAndName } from "~/lib/steam";
-import { SiWikipedia, SiReactHex, SiReact } from "@icons-pack/react-simple-icons";
+
 import Logo from "~/components/Logo";
+import WikipediaLink from "~/components/wikis/WikipediaLink";
 
 function SteamBadge() {
+  const [wikisFoundNum, setWikisFoundNum] = useState<number>(0);
   const [appData, setAppData] =
     useState<ReturnType<typeof extractSteamAppIdAndName>>(null);
-  const [searchUrl, setSearchUrl] = useState<string | null>("");
+
+  const wikisNumIncrement = useCallback(() => {
+    setWikisFoundNum((prev) => prev + 1);
+  }, []);
 
   useEffect(() => {
     const data = extractSteamAppIdAndName();
     if (!data) return;
-
     setAppData(data);
-
-    const gameUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(data.name)}`;
-    const checkDisambiguationUrl = `${gameUrl}_(disambiguation)`;
-
-    fetch(checkDisambiguationUrl)
-      .then((response) => {
-        if (response.ok) {
-          setSearchUrl(`${gameUrl}_(video_game)`);
-        } else {
-          fetch(gameUrl)
-            .then((response) => {
-              if (response.ok) {
-                setSearchUrl(gameUrl);
-              } else {
-                setSearchUrl(null);
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-              setSearchUrl(
-                `https://en.wikipedia.org/wiki/${encodeURIComponent(data.name)}`,
-              );
-            });
-        }
-
-        return response.text();
-      })
-      .catch((error) => {
-        console.error(error);
-        setSearchUrl(null);
-      });
+    console.log("data", data);
   }, []);
 
   if (!appData) return null;
@@ -54,19 +28,12 @@ function SteamBadge() {
       className="wikie-badge-container"
     >
       <Logo className="logo" /> <span className="app-name">{appData.name}</span>{" "}
-      <span className="wikis">wikis:</span>
-      <a
-        id={`wikie-wikipedia-${appData.appId}`}
-        className="wikie-wikipedia-badge"
-        href={
-          searchUrl ||
-          `https://en.wikipedia.org/wiki/${encodeURIComponent(appData.name)}`
-        }
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <SiWikipedia className="logo" id="wikipedia" />
-      </a>
+      <span className="wikis">wikis ({wikisFoundNum}):</span>
+      <WikipediaLink
+        steamGameName={appData.name}
+        steamGameId={appData.appId}
+        wikisNumIncrement={wikisNumIncrement}
+      />
     </div>
   );
 }
