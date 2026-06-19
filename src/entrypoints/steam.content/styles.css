@@ -1,21 +1,19 @@
-:root {
-  --background: #f0f8ff;
-  --foreground: #1a1a2e;
-  --secondary: #007944;
-  --tertiary: #55bddc;
-
-  color-scheme: light dark;
-}
-
-:root.dark {
-  --background: #faf7d7;
-  --foreground: #21161a;
-  --secondary: #cf602b;
-  --tertiary: #f4ad39;
-}
-
 * {
   font-family: "Pixelify Sans", sans-serif;
+}
+
+.logo {
+  max-width: 24px;
+  max-height: 24px;
+}
+
+.app-name {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.wikis {
+  font-size: 18px;
 }
 
 .wikie-badge-container {
@@ -36,37 +34,58 @@
   transition: opacity 0.2s;
 }
 
-.wikie-wikipedia-badge {
+.wikie-badge {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 4px 6px;
   border-radius: 6px;
+  width: 36px;
+  height: 32px;
   cursor: pointer;
   font-size: 12px;
   text-decoration: none;
   transition: opacity 0.2s;
+
+  &.loading-wiki::after {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    content: "-";
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    font-size: 24px;
+
+    animation: spin 0.8s infinite step-end;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-.wikie-wikipedia-badge:hover {
-  opacity: 0.8;
-}
+/*
+  Wiki Badges colors
+*/
 
-.wikie-wikipedia-badge:has(#wikipedia) {
-  background-color: white;
+.wikie-badge.wikipedia {
+  background: white;
   color: black;
 }
 
-.logo {
-  width: 24px;
-  height: 24px;
-}
-
-.app-name {
-  font-weight: bold;
-  font-size: 22px;
-}
-
-.wikis {
-  font-size: 18px;
+@keyframes spin {
+  0% {
+    content: "-";
+  }
+  25% {
+    content: "\\";
+  }
+  50% {
+    content: "|";
+  }
+  75% {
+    content: "/";
+  }
 }

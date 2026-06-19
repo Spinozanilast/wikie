@@ -12,10 +12,10 @@
 }
 
 :root {
-  --background: #332000;
-  --foreground: #f0ffff;
-  --secondary: #007944;
-  --tertiary: #55bddc;
+  --background: #faf7d7;
+  --foreground: #21161a;
+  --secondary: #cf602b;
+  --tertiary: #f4ad39;
 
   --font-pixelify: "Pixelify Sans", sans-serif;
   color-scheme: light dark;
@@ -24,10 +24,10 @@
 }
 
 .dark {
-  --background: #faf7d7;
-  --foreground: #21161a;
-  --secondary: #cf602b;
-  --tertiary: #f4ad39;
+  --background: #332000;
+  --foreground: #f0ffff;
+  --secondary: #007944;
+  --tertiary: #55bddc;
 }
 
 body {

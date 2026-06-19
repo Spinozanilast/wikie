@@ -1,8 +1,10 @@
 import "./styles.css";
 
 import ReactDOM from "react-dom/client";
+
+import { themeItem } from "@/lib/theme";
 import SteamBadge from "./SteamBadge.tsx";
-import React from "react";
+
 import "~/assets/styles.css";
 
 export default defineContentScript({
@@ -19,7 +21,16 @@ export default defineContentScript({
         container.append(wrapper);
 
         const root = ReactDOM.createRoot(wrapper);
+
+        themeItem.getValue().then((newTheme) => {
+          wrapper.classList.toggle("dark", newTheme === "dark");
+        });
+
         root.render(<SteamBadge />);
+
+        const unwatch = themeItem.watch((newTheme) => {
+          wrapper.classList.toggle("dark", newTheme === "dark");
+        });
 
         return { root, wrapper };
       },

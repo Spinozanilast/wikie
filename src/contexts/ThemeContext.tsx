@@ -1,35 +1,44 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-
-type Theme = "light" | "dark" | "system";
+import { WikieStorageThemeKey, Theme } from "~/lib/theme";
+import { themeItem } from "~/lib/theme";
 
 interface ThemeContextType {
-  theme: Theme;
+  theme?: Theme;
   toggle: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
-function getInitialTheme(): Theme {
-  const stored = localStorage.getItem("wikie-theme");
+async function getInitialTheme(): Promise<Theme> {
+  const stored = await themeItem.getValue();
   if (stored === "dark" || stored === "light" || stored === "system") return stored;
   return "system";
+}
+
+async function applyTheme(theme: Theme): Promise<void> {
+  const isDark = theme === "dark" || (theme === "system" && getSystemPrefers());
+  document.documentElement.classList.toggle("dark", isDark);
+  await themeItem.setValue(isDark ? "dark" : "light");
 }
 
 function getSystemPrefers(): boolean {
   return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
-function applyTheme(theme: Theme) {
-  const isDark = theme === "dark" || (theme === "system" && getSystemPrefers());
-  document.documentElement.classList.toggle("dark", isDark);
-}
-
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [theme, setTheme] = useState<Theme>();
 
   useEffect(() => {
-    applyTheme(theme);
-    localStorage.setItem("wikie-theme", theme);
+    getInitialTheme().then((stored) => {
+      setTheme(stored);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (theme === undefined) return;
+    (async () => {
+      await applyTheme(theme);
+    })();
   }, [theme]);
 
   useEffect(() => {
