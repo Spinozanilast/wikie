@@ -18,16 +18,17 @@ function WikipediaLink({
     const gameUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(steamGameName)}`;
 
     /**
-     * Check for page url
-     * if it exists, redirect to the page postfixed with _(video_game))
-     * mean, that wikipedia has more that one page with the same name
+     * Check for postfixed game page url
+     * if it exists, redirect to the page postfixed with _(video_game)
+     * otherwise, redirect to the regular game page if it exists
+     * for cases, where there are multiple pages with the same name
      */
-    const checkDisambiguationUrl = `${gameUrl}_(disambiguation)`;
+    const postfixedGamePageUrl = `${gameUrl}_(video_game)`;
 
     const getWikipediaPage = async () => {
-      const response = await fetch(checkDisambiguationUrl);
+      const response = await fetch(postfixedGamePageUrl);
       if (response.ok) {
-        setSearchUrl(`${gameUrl}_(video_game)`);
+        setSearchUrl(postfixedGamePageUrl);
         wikisNumIncrement();
       } else {
         const gameResponse = await fetch(gameUrl);
