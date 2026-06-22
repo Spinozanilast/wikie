@@ -75,6 +75,11 @@
   color: black;
 }
 
+.wikie-badge.steamdb {
+  background: #171a21;
+  color: white;
+}
+
 @keyframes spin {
   0% {
     content: "-";

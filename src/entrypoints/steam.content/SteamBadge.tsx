@@ -3,6 +3,7 @@ import { extractSteamAppIdAndName } from "~/lib/steam";
 
 import Logo from "~/components/Logo";
 import WikipediaLink from "~/components/wikis/WikipediaLink";
+import SteamDbLink from "@/components/wikis/SteamDbLink";
 
 function SteamBadge() {
   const [wikisFoundNum, setWikisFoundNum] = useState<number>(0);
@@ -29,6 +30,7 @@ function SteamBadge() {
     >
       <Logo className="logo" /> <span className="app-name">{appData.name}</span>{" "}
       <span className="wikis">wikis ({wikisFoundNum}):</span>
+      <SteamDbLink appId={appData.appId} />
       <WikipediaLink
         steamGameName={appData.name}
         steamGameId={appData.appId}
