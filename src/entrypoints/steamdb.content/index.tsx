@@ -17,6 +17,7 @@ export default defineContentScript({
       anchor: "body",
       onMount: (container) => {
         const wrapper = document.createElement("div");
+
         const appName = document.body.querySelector(
           '.pagehead-title h1[itemprop="name"]',
         )?.textContent;

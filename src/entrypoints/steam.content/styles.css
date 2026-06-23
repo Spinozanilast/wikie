@@ -20,6 +20,7 @@
   position: fixed;
   display: flex;
   align-items: center;
+  flex-direction: column;
   gap: 8px;
   bottom: 16px;
   right: 16px;
@@ -32,6 +33,18 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--tertiary);
   transition: opacity 0.2s;
+
+  > div {
+    gap: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .base-wikis-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
 }
 
 .wikie-badge {
@@ -63,6 +76,62 @@
 
   &:hover {
     opacity: 0.8;
+  }
+}
+
+/*
+  Independent Wiki Links
+*/
+
+.independent-wiki-links {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  h1 {
+    font-size: 15px;
+    color: var(--color-tertiary);
+  }
+
+  .origins-container {
+    display: inline-block;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  > div.wiki-group-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+
+    > div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      a {
+        background-color: var(--color-tertiary);
+        padding: 4px;
+        border-radius: 6px;
+      }
+
+      .origins-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        border-left: 2px dashed var(--color-tertiary);
+        padding-left: 8px;
+      }
+    }
+  }
+
+  a:hover {
+    scale: 1.05;
+    box-shadow: 0 0 8px var(--color-tertiary);
   }
 }
 

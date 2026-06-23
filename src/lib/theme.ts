@@ -1,8 +1,6 @@
 import { storage } from "@wxt-dev/storage";
 
-export const WikieStorageThemeKey = "local:theme";
-
-export const themeItem = storage.defineItem<Theme>(WikieStorageThemeKey, {
+export const themeItem = storage.defineItem<Theme>("local:theme", {
   fallback: "system",
 });
 
