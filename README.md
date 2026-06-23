@@ -6,3 +6,25 @@
   <br/>
   with getting all the useful resources you need.
 </div>
+
+# Todo
+
+- [x] Add displaying wikipedia page and steamdb(steam) link in badges for steamdb.info/app and store.steampowered.com/app
+- [x] Add Theme sync between popup and content scripts 
+- [x] Add independent wikis
+- [ ] Add independent wikis to steam db support
+- [ ] Add settings view to popup
+- [ ] Add styles customization
+- [ ] Add support for select of wikis display mode
+  - [ ] Inline in page
+    - [ ] Shadow root
+    - [ ] Applying steam pages styles
+  - [ ] Fixed in angle
+    - [ ] Left down
+    - [x] Right down
+    - [ ] Top left
+    - [ ] Top right
+- [ ] Display currently active wikis panels in popup
+- [ ] Make stats of frequently visited wikis
+- [ ] Add i18n support
+- [ ] Create Millenium app supporting themes
