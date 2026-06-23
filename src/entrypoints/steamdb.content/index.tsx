@@ -1,14 +1,14 @@
-import "./styles.css";
+import "../steam.content/styles.css";
 
 import ReactDOM from "react-dom/client";
 
 import { themeItem } from "~/lib/theme";
-import SteamBadge from "./SteamBadge.tsx";
+import SteamDbBadge from "./SteamDbBadge.tsx";
 
 import "~/assets/styles.css";
 
 export default defineContentScript({
-  matches: ["*://store.steampowered.com/app/*"],
+  matches: ["*://steamdb.info/app/*"],
   cssInjectionMode: "ui",
   async main(ctx) {
     const ui = await createShadowRootUi(ctx, {
@@ -17,6 +17,9 @@ export default defineContentScript({
       anchor: "body",
       onMount: (container) => {
         const wrapper = document.createElement("div");
+        const appName = document.body.querySelector(
+          '.pagehead-title h1[itemprop="name"]',
+        )?.textContent;
 
         container.append(wrapper);
 
@@ -26,7 +29,9 @@ export default defineContentScript({
           wrapper.classList.toggle("dark", newTheme === "dark");
         });
 
-        root.render(<SteamBadge />);
+        if (!appName) return;
+
+        root.render(<SteamDbBadge appName={appName} />);
 
         const unwatch = themeItem.watch((newTheme) => {
           wrapper.classList.toggle("dark", newTheme === "dark");

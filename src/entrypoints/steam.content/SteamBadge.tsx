@@ -1,21 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
-import { extractSteamAppIdAndName } from "~/lib/steam";
 
 import Logo from "~/components/Logo";
+import { extractSteamUrlAppIdAndName } from "~/lib/url";
 import WikipediaLink from "~/components/wikis/WikipediaLink";
-import SteamDbLink from "@/components/wikis/SteamDbLink";
+import SteamDbLink from "~/components/wikis/SteamDbLink";
 
 function SteamBadge() {
   const [wikisFoundNum, setWikisFoundNum] = useState<number>(0);
   const [appData, setAppData] =
-    useState<ReturnType<typeof extractSteamAppIdAndName>>(null);
+    useState<ReturnType<typeof extractSteamUrlAppIdAndName>>(null);
 
   const wikisNumIncrement = useCallback(() => {
     setWikisFoundNum((prev) => prev + 1);
   }, []);
 
   useEffect(() => {
-    const data = extractSteamAppIdAndName();
+    const data = extractSteamUrlAppIdAndName();
     if (!data) return;
     setAppData(data);
     console.log("data", data);
@@ -30,11 +30,11 @@ function SteamBadge() {
     >
       <Logo className="logo" /> <span className="app-name">{appData.name}</span>{" "}
       <span className="wikis">wikis ({wikisFoundNum}):</span>
-      <SteamDbLink appId={appData.appId} />
+      <SteamDbLink incrementWikisNum={wikisNumIncrement} appId={appData.appId} />
       <WikipediaLink
         steamGameName={appData.name}
         steamGameId={appData.appId}
-        wikisNumIncrement={wikisNumIncrement}
+        incrementWikisNum={wikisNumIncrement}
       />
     </div>
   );

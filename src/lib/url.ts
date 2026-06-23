@@ -1,6 +1,6 @@
 type SteamAppData = { appId: string; name: string };
 
-export function extractSteamAppIdAndName(): SteamAppData | null {
+export function extractSteamUrlAppIdAndName(): SteamAppData | null {
   const match = window.location.pathname.match(/\/app\/(\d+)(?:\/([^/]+))?/);
 
   if (!match) return null;
@@ -13,4 +13,9 @@ export function extractSteamAppIdAndName(): SteamAppData | null {
   }
 
   return { appId: match[1], name: appName };
+}
+
+export function extractSteamUrlAppId(): string | null {
+  const match = window.location.pathname.match(/\/app\/(\d+)/);
+  return match ? match[1] : null;
 }

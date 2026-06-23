@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
+import { WikiLinkComponent } from "~/lib/wikis";
 import { SiWikipedia } from "@icons-pack/react-simple-icons";
 
 type WikipediaLinkProps = {
   steamGameName: string;
   steamGameId: string;
-  wikisNumIncrement: () => void;
-};
+} & WikiLinkComponent;
 
 function WikipediaLink({
   steamGameName,
   steamGameId,
-  wikisNumIncrement,
+  incrementWikisNum: wikisNumIncrement,
 }: WikipediaLinkProps) {
   const [searchUrl, setSearchUrl] = useState<string | null>("");
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +52,7 @@ function WikipediaLink({
       }
 
       // last chance: search for the game name in the wikipedia search api
-      const searchUrl = `https://en.wikipedia.org/w/rest.php/v1/search/title?q=${encodeURIComponent(`${steamGameName}`)}&limit=5&cirrusUserTesting=T407432_dym_g_ld:control`;
+      const searchUrl = `https://en.wikipedia.org/w/rest.php/v1/search/title?q=${encodeURIComponent(`${steamGameName}`)}&limit=5`;
       const searchResponse = await fetch(searchUrl);
       if (searchResponse.ok) {
         const data = await searchResponse.json();

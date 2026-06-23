@@ -1,11 +1,11 @@
 import { WikiLinkComponent } from "~/lib/wikis";
-import { SiSteamdb } from "@icons-pack/react-simple-icons";
+import { SiSteam } from "@icons-pack/react-simple-icons";
 
-type SteamDbLinkProps = {
+type SteamLinkProps = {
   appId: string;
 } & WikiLinkComponent;
 
-function SteamDbLink({ appId, incrementWikisNum }: SteamDbLinkProps) {
+function SteamLink({ appId, incrementWikisNum }: SteamLinkProps) {
   useEffect(() => {
     incrementWikisNum();
   }, []);
@@ -14,13 +14,13 @@ function SteamDbLink({ appId, incrementWikisNum }: SteamDbLinkProps) {
     <a
       id={`wikie-steamdb-${appId}`}
       className="wikie-badge steamdb"
-      href={`https://steamdb.info/app/${appId}/charts`}
+      href={`https://store.steampowered.com/app/${appId}/`}
       target="_blank"
       rel="noopener noreferrer"
     >
-      <SiSteamdb className="logo" id="steamdb" />
+      <SiSteam className="logo" id="steamdb" />
     </a>
   );
 }
 
-export default SteamDbLink;
+export default SteamLink;
