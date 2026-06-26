@@ -4,7 +4,7 @@ import {
   openWikisPagesItem,
   switchToTab,
   type OpenWikiPage,
-} from "~/lib/messaging/wikis";
+} from "~/backend/messaging/wikis";
 
 import TitleBar from "~/components/TitleBar";
 

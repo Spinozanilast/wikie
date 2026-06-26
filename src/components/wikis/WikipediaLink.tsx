@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { WikiLinkComponent } from "~/shared/wikis";
-import { searchWikipediaPage } from "~/lib/messaging/wikis";
+import { WikiLinkComponent } from "~/lib/utils";
+import { searchWikipediaPage } from "~/backend/messaging/wikipedia";
 import { SiWikipedia } from "@icons-pack/react-simple-icons";
 
 type WikipediaLinkProps = {

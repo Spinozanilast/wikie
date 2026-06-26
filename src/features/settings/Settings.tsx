@@ -11,7 +11,7 @@ import {
   DEFAULT_STYLES_SETTINGS,
   Settings as SettingsType,
   settingsItem,
-} from "~/lib/settings";
+} from "~/backend/settings/settings";
 
 import { Icon } from "@phosphor-icons/react";
 import { CaretDownIcon } from "@phosphor-icons/react/dist/csr/CaretDown";
@@ -104,7 +104,10 @@ const SettingsSection = ({ id, icon: Icon, title, children }: SettingsSectionPro
         onClick={() => setIsOpen((prev) => !prev)}
         className="bg-secondary/10 relative w-full cursor-pointer rounded-sm py-2"
       >
-        <Icon className="absolute top-1/2 left-3 -translate-y-1/2 transform" />
+        <Icon
+          size={24}
+          className="absolute top-1/2 left-3 -translate-y-1/2 transform"
+        />
         <h1 className="text-center text-lg">{title}</h1>
         <CaretDownIcon
           className={`absolute top-1/2 right-3 -translate-y-1/2 transform transition-transform duration-300 ${

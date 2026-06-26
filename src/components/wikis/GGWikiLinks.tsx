@@ -1,4 +1,4 @@
-import { WikiLinkComponent } from "~/shared/wikis";
+import { WikiLinkComponent } from "~/lib/utils";
 
 type GGWikiLinksProps = {
   appName: string;

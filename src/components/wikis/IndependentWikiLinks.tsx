@@ -1,5 +1,5 @@
-import { WikiLinkComponent } from "~/shared/wikis";
-import { independentWikisItem } from "~/shared/independents";
+import { WikiLinkComponent } from "~/lib/utils";
+import { independentWikisItem } from "~/backend/wikis/independents";
 import {
   SiFandom,
   SiFandomHex,

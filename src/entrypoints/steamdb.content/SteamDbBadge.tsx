@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { extractSteamUrlAppId } from "~/lib/url";
 
 import Logo from "~/components/Logo";
-import { reportWikis } from "~/lib/messaging/wikis";
+import { reportWikis } from "~/backend/messaging/wikis";
 import WikipediaLink from "~/components/wikis/WikipediaLink";
 import SteamLink from "~/components/wikis/SteamLink";
 

@@ -1,4 +1,4 @@
-import { WikiLinkComponent } from "~/shared/wikis";
+import { WikiLinkComponent } from "~/lib/utils";
 import { SiSteamdb } from "@icons-pack/react-simple-icons";
 
 type SteamDbLinkProps = {

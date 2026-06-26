@@ -2,7 +2,7 @@ import "../steam.content/styles.css";
 
 import ReactDOM from "react-dom/client";
 
-import { applyCornerPosition, settingsItem } from "~/lib/settings";
+import { applyCornerPosition, settingsItem } from "~/backend/settings/settings.ts";
 import { themeItem } from "~/lib/theme";
 import SteamDbBadge from "./SteamDbBadge.tsx";
 
