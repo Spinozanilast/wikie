@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 
-import Logo from "~/components/Logo";
 import { reportWikis } from "~/backend/messaging/wikis";
 import { extractSteamUrlAppIdAndName } from "~/lib/url";
-import WikipediaLink from "~/components/wikis/WikipediaLink";
-import SteamDbLink from "~/components/wikis/SteamDbLink";
-import IndependentWikiLinks from "~/components/wikis/IndependentWikiLinks";
+import SteamRelatedBadge from "~/features/badges/SteamRelatedBadge";
 
 function SteamBadge() {
   const [wikisFoundNum, setWikisFoundNum] = useState<number>(0);
@@ -35,27 +32,13 @@ function SteamBadge() {
   if (!appData) return null;
 
   return (
-    <div
-      id={`wikie-badge-container-${appData.appId}`}
-      className="wikie-badge-container"
-    >
-      <div>
-        <Logo className="logo" /> <span className="app-name">{appData.name}</span>{" "}
-        <span className="wikis">wikis ({wikisFoundNum}):</span>
-        <div className="base-wikis-container">
-          <SteamDbLink incrementWikisNum={wikisNumIncrement} appId={appData.appId} />
-          <WikipediaLink
-            steamGameName={appData.name}
-            steamGameId={appData.appId}
-            incrementWikisNum={wikisNumIncrement}
-          />
-        </div>
-      </div>
-      <IndependentWikiLinks
-        appName={appData.name}
-        incrementWikisNum={wikisNumIncrement}
-      />
-    </div>
+    <SteamRelatedBadge
+      appId={appData.appId}
+      appName={appData.name}
+      wikisFoundNum={wikisFoundNum}
+      wikisNumIncrement={wikisNumIncrement}
+      badgeFor="steam"
+    />
   );
 }
 
