@@ -2,6 +2,15 @@ on:
   push:
     tags:
       - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Select the release tag"
+        required: true
+        default: "v0.0.1"
+
+permissions:
+  contents: write
 
 jobs:
   release:
@@ -22,7 +31,8 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            *.zip
+            .output/*.zip
           generate_release_notes: true
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
