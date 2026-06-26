@@ -1,6 +1,6 @@
 import { storage } from "@wxt-dev/storage";
 
-type WikiCollectionType = Map<string, IndependentWiki>;
+type WikiCollectionType = Record<string, IndependentWiki>;
 
 type Origin = {
   origin: string;
@@ -24,7 +24,7 @@ export type IndependentWiki = {
 };
 
 export class IndependentWikisCollection {
-  private static _wikis: WikiCollectionType = new Map();
+  private static _wikis: WikiCollectionType = {};
 
   static async prefetch(url: string): Promise<void> {
     const response = await fetch(url);
@@ -48,11 +48,11 @@ export class IndependentWikisCollection {
         destinationHost: entry.destination_host,
         tags: entry.tags ?? [],
       };
-      this._wikis.set(entry.id, wiki);
+      this._wikis[entry.id] = wiki;
     }
   }
 
-  static getCollection(): Map<string, IndependentWiki> {
+  static getCollection(): WikiCollectionType {
     return this._wikis;
   }
 }
@@ -60,6 +60,6 @@ export class IndependentWikisCollection {
 export const independentWikisItem = storage.defineItem<WikiCollectionType>(
   "local:independents",
   {
-    fallback: new Map(),
+    fallback: {},
   },
 );

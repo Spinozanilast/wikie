@@ -48,13 +48,13 @@ function IndependentWikiLinks({
     const populateData = async () => {
       try {
         const collection = await independentWikisItem.getValue();
-        if (!collection || (collection && collection.size === 0)) return;
+        if (!collection || (collection && Object.keys(collection).length === 0)) return;
 
-        const gameEntriesKeys = collection
-          .keys()
-          .filter((key) => key.startsWith(`en-${appNameProcessed}`));
+        const gameEntriesKeys = Object.keys(collection).filter((key) =>
+          key.startsWith(`en-${appNameProcessed}`),
+        );
 
-        const wikiEntries = gameEntriesKeys.map((key) => collection.get(key));
+        const wikiEntries = gameEntriesKeys.map((key) => collection[key]);
         const foundedWikiGroups: WikiGroup[] = [];
 
         for (const wikiEntry of wikiEntries) {

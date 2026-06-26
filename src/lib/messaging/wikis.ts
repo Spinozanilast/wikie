@@ -41,3 +41,22 @@ export function reportWikis(
 export function switchToTab(tabId: number, destination: Destination = "background") {
   popupSendMessage(OpenWikisMessages.SwitchToTab, { tabId }, destination);
 }
+
+export type WikipediaSearchResult = {
+  url: string;
+};
+
+export enum WikipediaMessages {
+  SearchPage = "WIKIPEDIA_SEARCH_PAGE",
+}
+
+export function searchWikipediaPage(
+  gameName: string,
+  destination: Destination = "background",
+) {
+  return contentScriptSendMessage<{ url: string | null }>(
+    WikipediaMessages.SearchPage,
+    { gameName },
+    destination,
+  );
+}
