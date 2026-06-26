@@ -6,12 +6,12 @@ type WelcomeScreenProps = {
   onDone: () => void;
 };
 
-function WelcomeScreen({ localStorageKey, onDone }: WelcomeScreenProps) {
+function WelcomeView({ localStorageKey, onDone }: WelcomeScreenProps) {
   return (
-    <div className="my-5 flex flex-col items-center justify-center gap-4">
+    <div className="font-pixelify my-5 flex flex-col items-center justify-center gap-4">
       <ThemeToggle className="absolute top-2 right-2" />
       <Logo className="max-w-24" />
-      <h1 className="text-9xl text-shadow-[0px_5px_1px_var(--color-tertiary)]">
+      <h1 className="text-dm-11 font-departure text-shadow-[0px_5px_1px_var(--color-tertiary)]">
         WIKIe
       </h1>
       <p className="max-w-1/2 text-justify text-xl italic">
@@ -41,4 +41,4 @@ function WelcomeScreen({ localStorageKey, onDone }: WelcomeScreenProps) {
   );
 }
 
-export default WelcomeScreen;
+export default WelcomeView;

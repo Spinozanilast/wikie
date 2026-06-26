@@ -58,7 +58,6 @@ function IndependentWikiLinks({
         const foundedWikiGroups: WikiGroup[] = [];
 
         for (const wikiEntry of wikiEntries) {
-          console.log(wikiEntry);
           if (!wikiEntry) return;
           const newWikiGroup: WikiGroup = {
             mainWiki: {

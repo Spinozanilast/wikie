@@ -22,8 +22,10 @@
   align-items: center;
   flex-direction: column;
   gap: 8px;
-  bottom: 16px;
-  right: 16px;
+  top: var(--badge-top, auto);
+  bottom: var(--badge-bottom, 16px);
+  left: var(--badge-left, auto);
+  right: var(--badge-right, 16px);
   z-index: 999999;
   background: var(--background);
   color: var(--foreground);

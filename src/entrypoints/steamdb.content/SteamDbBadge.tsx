@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { extractSteamUrlAppId } from "~/lib/url";
 
 import Logo from "~/components/Logo";
+import { reportWikis } from "~/lib/messaging/wikis";
 import WikipediaLink from "~/components/wikis/WikipediaLink";
 import SteamLink from "~/components/wikis/SteamLink";
 
@@ -23,18 +24,32 @@ function SteamDbBadge({ appName }: SteamDbBadgeProps) {
     setAppId(appId);
   }, []);
 
+  useEffect(() => {
+    if (!appId) return;
+    reportWikis({
+      appId,
+      appName,
+      source: "steamdb",
+      wikisFoundNum,
+    });
+  }, [appId, appName, wikisFoundNum]);
+
   if (!appId) return null;
 
   return (
     <div id={`wikie-badge-container-${appId}`} className="wikie-badge-container">
-      <Logo className="logo" /> <span className="app-name">{appName}</span>{" "}
-      <span className="wikis">wikis ({wikisFoundNum}):</span>
-      <SteamLink appId={appId} incrementWikisNum={wikisNumIncrement} />
-      <WikipediaLink
-        steamGameName={appName}
-        steamGameId={appId}
-        incrementWikisNum={wikisNumIncrement}
-      />
+      <div>
+        <Logo className="logo" /> <span className="app-name">{appName}</span>{" "}
+        <span className="wikis">wikis ({wikisFoundNum}):</span>
+        <div className="base-wikis-container">
+          <SteamLink incrementWikisNum={wikisNumIncrement} appId={appId} />
+          <WikipediaLink
+            steamGameName={appName}
+            steamGameId={appId}
+            incrementWikisNum={wikisNumIncrement}
+          />
+        </div>
+      </div>
     </div>
   );
 }

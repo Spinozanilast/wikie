@@ -19,11 +19,11 @@
   - [ ] Inline in page
     - [ ] Shadow root
     - [ ] Applying steam pages styles
-  - [ ] Fixed in angle
-    - [ ] Left down
+  - [x] Fixed in corner
+    - [x] Left down
     - [x] Right down
-    - [ ] Top left
-    - [ ] Top right
+    - [x] Top left
+    - [x] Top right
 - [ ] Display currently active wikis panels in popup
 - [ ] Make stats of frequently visited wikis
 - [ ] Add i18n support

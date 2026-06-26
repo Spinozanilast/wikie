@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import Logo from "~/components/Logo";
+import { reportWikis } from "~/lib/messaging/wikis";
 import { extractSteamUrlAppIdAndName } from "~/lib/url";
 import WikipediaLink from "~/components/wikis/WikipediaLink";
 import SteamDbLink from "~/components/wikis/SteamDbLink";
@@ -20,6 +21,16 @@ function SteamBadge() {
     if (!data) return;
     setAppData(data);
   }, []);
+
+  useEffect(() => {
+    if (!appData) return;
+    reportWikis({
+      appId: appData.appId,
+      appName: appData.name,
+      source: "steam",
+      wikisFoundNum,
+    });
+  }, [appData, wikisFoundNum]);
 
   if (!appData) return null;
 

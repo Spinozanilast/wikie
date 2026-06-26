@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { WikieStorageThemeKey, Theme } from "~/lib/theme";
+import { type Theme } from "~/lib/theme";
 import { themeItem } from "~/lib/theme";
 
 interface ThemeContextType {

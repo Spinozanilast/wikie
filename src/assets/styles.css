@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap");
 
+@import url("https://departuremono.com/mono.css");
+
 @import "tailwindcss";
 
 @theme inline {
@@ -9,6 +11,13 @@
   --color-tertiary: var(--tertiary);
 
   --radius-2xls: 14px;
+
+  --font-pixelify: "Pixelify Sans", sans-serif;
+  --font-departure: "Departure Mono", sans-serif;
+}
+
+@utility text-dm-* {
+  font-size: calc(11px * --value(number));
 }
 
 :root {
@@ -17,7 +26,6 @@
   --secondary: #cf602b;
   --tertiary: #f4ad39;
 
-  --font-pixelify: "Pixelify Sans", sans-serif;
   color-scheme: light dark;
   color: var(--foreground);
   background-color: var(--background);
@@ -38,8 +46,13 @@ body {
 }
 
 #root {
-  font-family: var(--font-pixelify);
   width: 100%;
   padding: 0.4rem;
   text-align: center;
+}
+
+@layer components {
+  .btn {
+    @apply bg-secondary/10 text-foreground hover:border-secondary active:bg-secondary/20 inline-flex cursor-pointer items-center justify-center rounded-md border border-transparent p-2 text-sm font-medium transition-colors active:scale-95;
+  }
 }

@@ -2,6 +2,7 @@ import "./styles.css";
 
 import ReactDOM from "react-dom/client";
 
+import { applyCornerPosition, settingsItem } from "~/lib/settings";
 import { themeItem } from "~/lib/theme";
 import SteamBadge from "./SteamBadge.tsx";
 
@@ -26,17 +27,27 @@ export default defineContentScript({
           wrapper.classList.toggle("dark", newTheme === "dark");
         });
 
+        settingsItem.getValue().then((settings) => {
+          applyCornerPosition(wrapper, settings.CornerPosition);
+        });
+
         root.render(<SteamBadge />);
 
-        const unwatch = themeItem.watch((newTheme) => {
+        const unwatchTheme = themeItem.watch((newTheme) => {
           wrapper.classList.toggle("dark", newTheme === "dark");
         });
 
-        return { root, wrapper };
+        const unwatchSettings = settingsItem.watch((settings) => {
+          applyCornerPosition(wrapper, settings.CornerPosition);
+        });
+
+        return { root, wrapper, unwatchTheme, unwatchSettings };
       },
       onRemove: (elements) => {
         elements?.root.unmount();
         elements?.wrapper.remove();
+        elements?.unwatchTheme?.();
+        elements?.unwatchSettings?.();
       },
     });
 

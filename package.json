@@ -23,23 +23,23 @@
     "@icons-pack/react-simple-icons": "^13.13.0",
     "@phosphor-icons/react": "^2.1.10",
     "@tailwindcss/vite": "^4.3.1",
-    "@webext-core/messaging": "^3.0.2",
     "@wxt-dev/storage": "^1.2.8",
     "clsx": "^2.1.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "tailwind-merge": "^3.6.0",
-    "tailwindcss": "^4.3.1"
+    "tailwindcss": "^4.3.1",
+    "webext-bridge": "^6.0.1"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@wxt-dev/module-react": "^1.2.2",
-    "autoprefixer": "^10.5.0",
+    "autoprefixer": "^10.5.1",
     "postcss": "^8.5.15",
     "prettier": "3.8.4",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^5.9.3",
-    "wxt": "^0.20.26"
+    "wxt": "^0.20.27"
   }
 }

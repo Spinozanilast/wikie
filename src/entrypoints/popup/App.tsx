@@ -1,20 +1,34 @@
 import { useState } from "react";
 
-import WelcomeScreen from "~/components/views/Welcome";
-import MainScreen from "~/components/views/Main";
+import WelcomeView from "~/features/welcome/View";
+import MainView from "~/features/main/View";
+import SettingsView from "~/features/settings/View";
 
 const WELCOMED_KEY = "wikie-welcomed";
 
-function App() {
-  const [welcomed, setWelcomed] = useState(
-    () => localStorage.getItem(WELCOMED_KEY) === "true",
-  );
+enum View {
+  Welcome,
+  Main,
+  Settings,
+}
 
-  if (!welcomed)
-    return (
-      <WelcomeScreen localStorageKey={WELCOMED_KEY} onDone={() => setWelcomed(true)} />
-    );
-  return <MainScreen />;
+function App() {
+  const [activeView, setView] = useState<View>(() => {
+    return localStorage.getItem(WELCOMED_KEY) === "true" ? View.Main : View.Welcome;
+  });
+
+  switch (activeView) {
+    case View.Welcome:
+      return (
+        <WelcomeView localStorageKey={WELCOMED_KEY} onDone={() => setView(View.Main)} />
+      );
+    case View.Main:
+      return <MainView openSettingPage={() => setView(View.Settings)} />;
+    case View.Settings:
+      return <SettingsView openMainPage={() => setView(View.Main)} />;
+    default:
+      return null;
+  }
 }
 
 export default App;
