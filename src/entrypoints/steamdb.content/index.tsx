@@ -7,6 +7,7 @@ import { themeItem } from "~/lib/theme";
 import SteamDbBadge from "./SteamDbBadge.tsx";
 
 import "~/assets/styles.css";
+import { AppWikisInfoStore } from "@/contexts/WikisContext.tsx";
 
 export default defineContentScript({
   matches: ["*://steamdb.info/app/*"],
@@ -37,7 +38,11 @@ export default defineContentScript({
 
         if (!appName) return;
 
-        root.render(<SteamDbBadge appName={appName} />);
+        root.render(
+          <AppWikisInfoStore>
+            <SteamDbBadge appName={appName} />
+          </AppWikisInfoStore>,
+        );
 
         const unwatchTheme = themeItem.watch((newTheme) => {
           wrapper.classList.toggle("dark", newTheme === "dark");

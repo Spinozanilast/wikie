@@ -3,12 +3,19 @@ import { sendMessage as contentScriptSendMessage } from "webext-bridge/content-s
 import { sendMessage as popupSendMessage } from "webext-bridge/popup";
 import type { Destination } from "webext-bridge";
 
+export type WikiInfo = {
+  url: string;
+  host: string;
+  title: string;
+};
+
 export interface OpenWikiPage {
   appId: string;
   appName: string;
   source: "steam" | "steamdb";
-  wikisFoundNum: number;
+  wikisFoundCount: number;
   tabId: number;
+  wikis: WikiInfo[];
 }
 
 export enum OpenWikisMessages {

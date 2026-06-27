@@ -25,7 +25,7 @@
     - [x] Right down
     - [x] Top left
     - [x] Top right
-- [ ] Display currently active wikis panels in popup
+- [x] Display currently active wikis panels in popup
 - [ ] Make stats of frequently visited wikis
 - [ ] Add i18n support
 - [ ] Create Millenium app supporting themes

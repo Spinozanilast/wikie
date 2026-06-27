@@ -1,45 +1,33 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import { reportWikis } from "~/backend/messaging/wikis";
 import { extractSteamUrlAppIdAndName } from "~/lib/url";
+import { reportWikis } from "~/backend/messaging/wikis";
+import { useAppWikis } from "~/contexts/WikisContext";
 import SteamRelatedBadge from "~/features/badges/SteamRelatedBadge";
 
 function SteamBadge() {
-  const [wikisFoundNum, setWikisFoundNum] = useState<number>(0);
-  const [appData, setAppData] =
-    useState<ReturnType<typeof extractSteamUrlAppIdAndName>>(null);
-
-  const wikisNumIncrement = useCallback(() => {
-    setWikisFoundNum((prev) => prev + 1);
-  }, []);
+  const { appId, appName, getWikis, wikisCount, setAppInfo } = useAppWikis();
 
   useEffect(() => {
     const data = extractSteamUrlAppIdAndName();
     if (!data) return;
-    setAppData(data);
+    setAppInfo(data.appId, data.name);
   }, []);
 
   useEffect(() => {
-    if (!appData) return;
+    if (!appId) return;
     reportWikis({
-      appId: appData.appId,
-      appName: appData.name,
+      appId,
+      appName,
       source: "steam",
-      wikisFoundNum,
+      wikisFoundCount: wikisCount,
+      wikis: getWikis(),
     });
-  }, [appData, wikisFoundNum]);
+  }, [appId, appName, wikisCount]);
 
-  if (!appData) return null;
+  if (!appId) return null;
 
-  return (
-    <SteamRelatedBadge
-      appId={appData.appId}
-      appName={appData.name}
-      wikisFoundNum={wikisFoundNum}
-      wikisNumIncrement={wikisNumIncrement}
-      badgeFor="steam"
-    />
-  );
+  return <SteamRelatedBadge badgeFor="steam" />;
 }
 
 export default SteamBadge;

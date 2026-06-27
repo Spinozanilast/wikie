@@ -1,18 +1,11 @@
 import { useEffect, useState } from "react";
-import { WikiLinkComponent } from "~/lib/utils";
 import { searchWikipediaPage } from "~/backend/messaging/wikipedia";
 import { SiWikipedia } from "@icons-pack/react-simple-icons";
+import { useAppWikis } from "~/contexts/WikisContext";
+import { WikisHosts } from "~/lib/hosts";
 
-type WikipediaLinkProps = {
-  steamGameName: string;
-  steamGameId: string;
-} & WikiLinkComponent;
-
-function WikipediaLink({
-  steamGameName,
-  steamGameId,
-  incrementWikisNum: wikisNumIncrement,
-}: WikipediaLinkProps) {
+function WikipediaLink() {
+  const { appName, appId, addWiki } = useAppWikis();
   const [searchUrl, setSearchUrl] = useState<string | null>("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,10 +14,14 @@ function WikipediaLink({
 
     const getWikipediaPage = async () => {
       try {
-        const { url } = await searchWikipediaPage(steamGameName);
+        const { url } = await searchWikipediaPage(appName);
         if (url) {
           setSearchUrl(url);
-          wikisNumIncrement();
+          addWiki({
+            host: WikisHosts.Wikipedia,
+            title: "Wikipedia game page",
+            url,
+          });
         } else {
           setSearchUrl(null);
         }
@@ -45,12 +42,9 @@ function WikipediaLink({
 
   return (
     <a
-      id={`wikie-wikipedia-${steamGameId}`}
+      id={`wikie-wikipedia-${appId}`}
       className="wikie-badge wikipedia"
-      href={
-        searchUrl ||
-        `https://en.wikipedia.org/wiki/${encodeURIComponent(steamGameName)}`
-      }
+      href={searchUrl || `https://en.wikipedia.org/wiki/${encodeURIComponent(appName)}`}
       target="_blank"
       rel="noopener noreferrer"
     >

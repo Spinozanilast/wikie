@@ -1,13 +1,17 @@
-import { WikiLinkComponent } from "~/lib/utils";
+import { WikisHosts } from "~/lib/hosts";
 import { SiSteam } from "@icons-pack/react-simple-icons";
 
-type SteamLinkProps = {
-  appId: string;
-} & WikiLinkComponent;
+import { useAppWikis } from "~/contexts/WikisContext";
 
-function SteamLink({ appId, incrementWikisNum }: SteamLinkProps) {
+function SteamLink() {
+  const { appId, addWiki } = useAppWikis();
+
   useEffect(() => {
-    incrementWikisNum();
+    addWiki({
+      title: "Steam",
+      host: WikisHosts.Steam,
+      url: `https://store.steampowered.com/app/${appId}/`,
+    });
   }, []);
 
   return (

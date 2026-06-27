@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import WelcomeView from "~/features/welcome/View";
-import MainView from "~/features/main/View";
-import SettingsView from "~/features/settings/View";
+import WelcomeView from "~/features/welcome.popup/View";
+import MainView from "~/features/main.popup/View";
+import SettingsView from "~/features/settings.popup/View";
 
 const WELCOMED_KEY = "wikie-welcomed";
 

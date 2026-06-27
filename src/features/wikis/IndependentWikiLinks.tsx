@@ -1,4 +1,3 @@
-import { WikiLinkComponent } from "~/lib/utils";
 import { independentWikisItem } from "~/backend/wikis/independents";
 import {
   SiFandom,
@@ -7,10 +6,7 @@ import {
   SiWikidotggHex,
 } from "@icons-pack/react-simple-icons";
 import { CheckFatIcon } from "@phosphor-icons/react/dist/csr/CheckFat";
-
-type IndependentWikiLinksProps = {
-  appName: string;
-} & WikiLinkComponent;
+import { useAppWikis } from "@/contexts/WikisContext";
 
 type WikiInfo = {
   url: string;
@@ -36,10 +32,8 @@ function getHostIcon(host: Host, size: number = 24) {
   }
 }
 
-function IndependentWikiLinks({
-  appName,
-  incrementWikisNum,
-}: IndependentWikiLinksProps) {
+function IndependentWikiLinks() {
+  const { appName, addWiki } = useAppWikis();
   const appNameProcessed = useMemo(() => appName.replace(" ", "").toLowerCase(), []);
 
   const [wikiGroups, setWikiGroups] = useState<WikiGroup[]>([]);
@@ -67,16 +61,18 @@ function IndependentWikiLinks({
             },
             origins: [],
           };
-          incrementWikisNum();
+          addWiki(newWikiGroup.mainWiki);
 
           if (wikiEntry.origins.length !== 0) {
             wikiEntry.origins.forEach((origin) => {
-              incrementWikisNum();
-              newWikiGroup.origins.push({
+              const originWiki = {
                 url: `https://${origin?.originBaseUrl}`,
                 title: origin?.origin || "",
                 host: origin?.originBaseUrl.match(/\.(\S+)\.com/)?.[1] || "",
-              });
+              };
+
+              addWiki(originWiki);
+              newWikiGroup.origins.push(originWiki);
             });
           }
 

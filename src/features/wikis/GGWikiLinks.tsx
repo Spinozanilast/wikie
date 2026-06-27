@@ -1,10 +1,4 @@
-import { WikiLinkComponent } from "~/lib/utils";
-
-type GGWikiLinksProps = {
-  appName: string;
-} & WikiLinkComponent;
-
-function GGWikiLinks({ appName, incrementWikisNum }: GGWikiLinksProps) {
+function GGWikiLinks() {
   return <div></div>;
 }
 

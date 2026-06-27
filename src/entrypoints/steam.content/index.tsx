@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 
 import { applyCornerPosition, settingsItem } from "~/backend/settings/settings.ts";
 import { themeItem } from "~/lib/theme";
+import { AppWikisInfoStore } from "~/contexts/WikisContext.tsx";
 import SteamBadge from "./SteamBadge.tsx";
 
 import "~/assets/styles.css";
@@ -31,7 +32,11 @@ export default defineContentScript({
           applyCornerPosition(wrapper, settings.CornerPosition);
         });
 
-        root.render(<SteamBadge />);
+        root.render(
+          <AppWikisInfoStore>
+            <SteamBadge />
+          </AppWikisInfoStore>,
+        );
 
         const unwatchTheme = themeItem.watch((newTheme) => {
           wrapper.classList.toggle("dark", newTheme === "dark");

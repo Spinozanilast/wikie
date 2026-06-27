@@ -7,6 +7,7 @@ import {
 } from "~/backend/messaging/wikis";
 
 import TitleBar from "~/components/TitleBar";
+import WikiPreviewLink from "./WikiPreviewLink";
 
 import { SiSteam, SiSteamdb } from "@icons-pack/react-simple-icons";
 import { GearSixIcon } from "@phosphor-icons/react/dist/csr/GearSix";
@@ -43,26 +44,39 @@ function OpenWikisList() {
       <p className="text-md mb-2">Open wiki pages:</p>
       {openWikis.map((wiki) => (
         <div
+          className="border-tertiary/80 flex flex-col rounded-2xl border p-1"
           key={wiki.tabId}
-          className="border-tertiary bg-secondary/10 rounded-2xls flex items-center gap-3 border-2 px-3 py-2 text-left transition-colors"
         >
-          <div className="flex shrink-0 items-center gap-1">
-            {wiki.source === "steam" ? <SiSteam size={20} /> : <SiSteamdb size={20} />}
+          <div className="border-tertiary/50 bg-secondary/10 rounded-2xls flex items-center gap-3 border-2 px-3 py-2 text-left transition-colors">
+            <div className="flex shrink-0 items-center gap-1">
+              {wiki.source === "steam" ? (
+                <SiSteam size={20} />
+              ) : (
+                <SiSteamdb size={20} />
+              )}
+            </div>
+            <span className="flex-1 truncate text-sm">{wiki.appName}</span>
+            <span
+              className="bg-tertiary text-background rounded-md px-2 py-0.5 text-xs font-bold"
+              title={`${wiki.wikisFoundCount} wiki${wiki.wikisFoundCount !== 1 ? "s" : ""}`}
+            >
+              {wiki.wikisFoundCount}
+            </span>
+            <button
+              onClick={() => switchToTab(wiki.tabId)}
+              className="font-departure text-tertiary cursor-pointer text-xl hover:scale-110"
+              title={`Go to tab ${wiki.tabId} (${wiki.appName})`}
+            >
+              →
+            </button>
           </div>
-          <span className="flex-1 truncate text-sm">{wiki.appName}</span>
-          <span
-            className="bg-tertiary text-background rounded-md px-2 py-0.5 text-xs font-bold"
-            title={`${wiki.wikisFoundNum} wiki${wiki.wikisFoundNum !== 1 ? "s" : ""}`}
-          >
-            {wiki.wikisFoundNum}
-          </span>
-          <button
-            onClick={() => switchToTab(wiki.tabId)}
-            className="font-departure text-tertiary cursor-pointer text-xl hover:scale-110"
-            title={`Go to tab ${wiki.tabId} (${wiki.appName})`}
-          >
-            →
-          </button>
+          {wiki.wikis && (
+            <div className="flex flex-wrap items-center justify-center gap-2 p-2">
+              {wiki.wikis.map((wiki, idx) => (
+                <WikiPreviewLink key={idx} wiki={wiki} />
+              ))}
+            </div>
+          )}
         </div>
       ))}
     </div>
