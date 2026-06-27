@@ -5,7 +5,7 @@ export type StylesSettings = {
   InjectionMode: "fixed" | "inner";
 };
 
-export const DEFAULT_STYLES_SETTINGS: Settings = {
+export const DefaultStyleSettings: Settings = {
   CornerPosition: "right-bottom",
   InjectionMode: "fixed",
 };
@@ -13,7 +13,7 @@ export const DEFAULT_STYLES_SETTINGS: Settings = {
 export type Settings = StylesSettings;
 
 export const settingsItem = storage.defineItem<Settings>("local:settings", {
-  fallback: DEFAULT_STYLES_SETTINGS,
+  fallback: DefaultStyleSettings,
 });
 
 const cornerPositions: Record<

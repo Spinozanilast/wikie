@@ -8,7 +8,7 @@ import React, {
 } from "react";
 
 import {
-  DEFAULT_STYLES_SETTINGS,
+  DefaultStyleSettings,
   Settings as SettingsType,
   settingsItem,
 } from "~/backend/settings/settings";
@@ -46,7 +46,7 @@ const Settings: React.FC<SettingsProviderProps> & {
   Item: React.FC<SettingsItemProps>;
 } = ({
   children,
-  initialValues = DEFAULT_STYLES_SETTINGS,
+  initialValues = DefaultStyleSettings,
   onChange,
 }: SettingsProviderProps) => {
   const [settings, setSettings] = useState<SettingsType>(initialValues);
@@ -70,9 +70,9 @@ const Settings: React.FC<SettingsProviderProps> & {
   );
 
   const resetValues = useCallback(async () => {
-    setSettings(DEFAULT_STYLES_SETTINGS);
-    onChange?.(DEFAULT_STYLES_SETTINGS);
-    await settingsItem.setValue(DEFAULT_STYLES_SETTINGS);
+    setSettings(DefaultStyleSettings);
+    onChange?.(DefaultStyleSettings);
+    await settingsItem.setValue(DefaultStyleSettings);
   }, [onChange]);
 
   return (
