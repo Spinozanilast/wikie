@@ -1,19 +1,25 @@
 import { storage } from "@wxt-dev/storage";
 
+export type DisplayMode = "shadow" | "shadow-inline";
+
 export type StylesSettings = {
   CornerPosition: "left-top" | "right-top" | "right-bottom" | "left-bottom";
-  InjectionMode: "fixed" | "inner";
 };
 
 export const DefaultStyleSettings: Settings = {
   CornerPosition: "right-bottom",
-  InjectionMode: "fixed",
 };
+
+export const DefaultDisplayMode: DisplayMode = "shadow";
 
 export type Settings = StylesSettings;
 
 export const settingsItem = storage.defineItem<Settings>("local:settings", {
   fallback: DefaultStyleSettings,
+});
+
+export const displayModeItem = storage.defineItem<DisplayMode>("local:displayMode", {
+  fallback: DefaultDisplayMode,
 });
 
 const cornerPositions: Record<
@@ -35,4 +41,8 @@ export function applyCornerPosition(
   wrapper.style.setProperty("--badge-bottom", pos.bottom ?? "auto");
   wrapper.style.setProperty("--badge-left", pos.left ?? "auto");
   wrapper.style.setProperty("--badge-right", pos.right ?? "auto");
+}
+
+export function applyDisplayMode(wrapper: HTMLElement, mode: DisplayMode) {
+  wrapper.classList.toggle("inline-mode", mode === "shadow-inline");
 }

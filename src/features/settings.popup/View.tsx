@@ -8,6 +8,10 @@ import { ArrowCircleUpRightIcon } from "@phosphor-icons/react/dist/csr/ArrowCirc
 import { ArrowCircleDownLeftIcon } from "@phosphor-icons/react/dist/csr/ArrowCircleDownLeft";
 import { ArrowCircleDownRightIcon } from "@phosphor-icons/react/dist/csr/ArrowCircleDownRight";
 import { CornersInIcon } from "@phosphor-icons/react/dist/csr/CornersIn";
+import { SelectionSlashIcon } from "@phosphor-icons/react/dist/csr/SelectionSlash";
+import { TextAlignLeftIcon } from "@phosphor-icons/react/dist/csr/TextAlignLeft";
+
+import { DisplayMode } from "~/backend/settings/settings";
 
 type SettingsScreenProps = {
   openMainPage: () => void;
@@ -61,10 +65,59 @@ function CornerSelector() {
   );
 }
 
+const displayModes: {
+  mode: DisplayMode;
+  title: string;
+  icon: typeof SelectionSlashIcon;
+}[] = [
+  {
+    mode: "shadow",
+    title: "Floating corner panel",
+    icon: SelectionSlashIcon,
+  },
+  {
+    mode: "shadow-inline",
+    title: "Inline in page",
+    icon: TextAlignLeftIcon,
+  },
+];
+
+function DisplayModeSelector() {
+  const { displayMode, updateDisplayMode } = useSettings();
+
+  return (
+    <div className="flex gap-4">
+      {displayModes.map(({ mode, title, icon: Icon }) => (
+        <button
+          key={mode}
+          title={title}
+          onClick={() => updateDisplayMode(mode)}
+          className={`btn ${displayMode === mode ? "text-tertiary" : ""}`}
+        >
+          <Icon size={28} />
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function SettingsContent() {
   return (
     <Settings>
       <Settings.Section id="style-settings" icon={LayoutIcon} title="Style Settings">
+        <Settings.Item
+          icon={SelectionSlashIcon}
+          title="Display mode"
+          description={
+            <>
+              Switch between <span className="text-tertiary font-bold">Shadow</span>{" "}
+              (floating corner panel) and{" "}
+              <span className="text-tertiary font-bold">Inline</span> (in-page flow)
+            </>
+          }
+        >
+          <DisplayModeSelector />
+        </Settings.Item>
         <Settings.Item
           icon={CornersInIcon}
           title="Display corner"

@@ -8,60 +8,61 @@ import SteamDbBadge from "./SteamDbBadge.tsx";
 
 import "~/assets/styles.css";
 import { AppWikisInfoStore } from "@/contexts/WikisContext.tsx";
+import { renderUiVariantsOnDisplayModeChange } from "@/lib/display.ts";
 
 export default defineContentScript({
   matches: ["*://steamdb.info/app/*"],
   cssInjectionMode: "ui",
   async main(ctx) {
-    const ui = await createShadowRootUi(ctx, {
-      name: "wikie-steam",
-      position: "inline",
-      anchor: "body",
-      onMount: (container) => {
-        const wrapper = document.createElement("div");
+    renderUiVariantsOnDisplayModeChange(() =>
+      createShadowRootUi(ctx, {
+        name: "wikie-steam",
+        position: "inline",
+        anchor: "body",
+        onMount: (container) => {
+          const wrapper = document.createElement("div");
 
-        const appName = document.body.querySelector(
-          '.pagehead-title h1[itemprop="name"]',
-        )?.textContent;
+          const appName = document.body.querySelector(
+            '.pagehead-title h1[itemprop="name"]',
+          )?.textContent;
 
-        container.append(wrapper);
+          container.append(wrapper);
 
-        const root = ReactDOM.createRoot(wrapper);
+          const root = ReactDOM.createRoot(wrapper);
 
-        themeItem.getValue().then((newTheme) => {
-          wrapper.classList.toggle("dark", newTheme === "dark");
-        });
+          themeItem.getValue().then((newTheme) => {
+            wrapper.classList.toggle("dark", newTheme === "dark");
+          });
 
-        settingsItem.getValue().then((settings) => {
-          applyCornerPosition(wrapper, settings.CornerPosition);
-        });
+          settingsItem.getValue().then((settings) => {
+            applyCornerPosition(wrapper, settings.CornerPosition);
+          });
 
-        if (!appName) return;
+          if (!appName) return;
 
-        root.render(
-          <AppWikisInfoStore>
-            <SteamDbBadge appName={appName} />
-          </AppWikisInfoStore>,
-        );
+          root.render(
+            <AppWikisInfoStore>
+              <SteamDbBadge appName={appName} />
+            </AppWikisInfoStore>,
+          );
 
-        const unwatchTheme = themeItem.watch((newTheme) => {
-          wrapper.classList.toggle("dark", newTheme === "dark");
-        });
+          const unwatchTheme = themeItem.watch((newTheme) => {
+            wrapper.classList.toggle("dark", newTheme === "dark");
+          });
 
-        const unwatchSettings = settingsItem.watch((settings) => {
-          applyCornerPosition(wrapper, settings.CornerPosition);
-        });
+          const unwatchSettings = settingsItem.watch((settings) => {
+            applyCornerPosition(wrapper, settings.CornerPosition);
+          });
 
-        return { root, wrapper, unwatchTheme, unwatchSettings };
-      },
-      onRemove: (elements) => {
-        elements?.root.unmount();
-        elements?.wrapper.remove();
-        elements?.unwatchTheme?.();
-        elements?.unwatchSettings?.();
-      },
-    });
-
-    ui.mount();
+          return { root, wrapper, unwatchTheme, unwatchSettings };
+        },
+        onRemove: (elements) => {
+          elements?.root.unmount();
+          elements?.wrapper.remove();
+          elements?.unwatchTheme?.();
+          elements?.unwatchSettings?.();
+        },
+      }),
+    );
   },
 });

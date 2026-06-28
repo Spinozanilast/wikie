@@ -23,7 +23,7 @@ function SteamDbBadge({ appName }: SteamDbBadgeProps) {
     reportWikis({
       appId,
       appName,
-      source: "steam",
+      source: "steamdb",
       wikisFoundCount: wikisCount,
       wikis: getWikis(),
     });

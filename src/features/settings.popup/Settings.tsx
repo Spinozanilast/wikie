@@ -9,7 +9,10 @@ import React, {
 
 import {
   DefaultStyleSettings,
+  DefaultDisplayMode,
+  DisplayMode,
   Settings as SettingsType,
+  displayModeItem,
   settingsItem,
 } from "~/backend/settings/settings";
 
@@ -23,8 +26,10 @@ type SettingsUpdate = {
 
 type SettingsContextType = {
   settings: SettingsType;
+  displayMode: DisplayMode;
   updateValue: (update: SettingsUpdate) => void;
   resetValues: () => void;
+  updateDisplayMode: (mode: DisplayMode) => void;
 };
 
 const SettingsContext = createContext<SettingsContextType | null>(null);
@@ -50,10 +55,14 @@ const Settings: React.FC<SettingsProviderProps> & {
   onChange,
 }: SettingsProviderProps) => {
   const [settings, setSettings] = useState<SettingsType>(initialValues);
+  const [displayMode, setDisplayMode] = useState<DisplayMode>(DefaultDisplayMode);
 
   useEffect(() => {
     settingsItem.getValue().then((stored) => {
       setSettings(stored);
+    });
+    displayModeItem.getValue().then((mode) => {
+      setDisplayMode(mode);
     });
   }, []);
 
@@ -75,12 +84,19 @@ const Settings: React.FC<SettingsProviderProps> & {
     await settingsItem.setValue(DefaultStyleSettings);
   }, [onChange]);
 
+  const updateDisplayMode = useCallback((mode: DisplayMode) => {
+    setDisplayMode(mode);
+    displayModeItem.setValue(mode);
+  }, []);
+
   return (
     <SettingsContext.Provider
       value={{
+        displayMode,
         settings,
         updateValue,
         resetValues,
+        updateDisplayMode,
       }}
     >
       {children}

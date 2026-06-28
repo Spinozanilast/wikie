@@ -20,8 +20,8 @@
 - [ ] Add styles customization
 - [ ] Add support for select of wikis display mode
   - [ ] Inline in page
-    - [ ] Shadow root
     - [ ] Applying steam pages styles
+    - [ ] Own styles
   - [x] Fixed in corner
     - [x] Left down
     - [x] Right down
