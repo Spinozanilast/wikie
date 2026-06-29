@@ -7,9 +7,9 @@ import {
 import { CheckFatIcon } from "@phosphor-icons/react/dist/csr/CheckFat";
 import type { IndependentWikiGroup } from "~/backend/wikis/gameWikiData";
 
-type Host = "wiki.gg" | "fandom";
+export type Host = "wiki.gg" | "fandom";
 
-function getHostIcon(host: Host, size: number = 24) {
+export function getHostIcon(host: Host, size: number = 24) {
   switch (host) {
     case "wiki.gg":
       return <SiWikidotgg size={size} color={SiFandomHex} />;

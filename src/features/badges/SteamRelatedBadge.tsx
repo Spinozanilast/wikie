@@ -17,7 +17,10 @@ type SteamBadgeProps = {
 function SteamRelatedBadge({ badgeFor, wikiData, displayMode }: SteamBadgeProps) {
   if (displayMode === "inline") {
     return (
-      <div id={`wikie-badge-inline-container-${wikiData.appId}`} className="wikie-inline-badge">
+      <div
+        id={`wikie-badge-inline-container-${wikiData.appId}`}
+        className="wikie-inline-badge"
+      >
         <div className="base-wikis-container">
           {badgeFor === "steam" ? (
             <SteamDbLink appId={wikiData.appId} url={wikiData.steamDbUrl} />
@@ -36,10 +39,13 @@ function SteamRelatedBadge({ badgeFor, wikiData, displayMode }: SteamBadgeProps)
   }
 
   return (
-    <div id={`wikie-badge-container-${wikiData.appId}`} className="wikie-badge-container">
+    <div
+      id={`wikie-badge-container-${wikiData.appId}`}
+      className="wikie-badge-container"
+    >
       <div>
         <Logo className="logo" /> <span className="app-name">{wikiData.appName}</span>{" "}
-        <span className="wikis">wikis ({wikiData.wikis.length}):</span>
+        <span className="wikis">wikis ({wikiData.wikis.length - 1}):</span>
         <div className="base-wikis-container">
           {badgeFor === "steam" ? (
             <SteamDbLink appId={wikiData.appId} url={wikiData.steamDbUrl} />
