@@ -1,7 +1,5 @@
 import { GameWikiData } from "~/backend/wikis/gameWikiData";
-import SteamDbLink from "~/features/wikis/SteamDbLink";
 import WikipediaLink from "~/features/wikis/WikipediaLink";
-import SteamLink from "~/features/wikis/SteamLink";
 import { getHostIcon, Host } from "~/features/wikis/IndependentWikiLinks";
 
 type WikisLinksProps = {
@@ -14,7 +12,7 @@ function SteaemDbLinksBadge({ wikiData, badgeFor }: WikisLinksProps) {
     <div style={{ display: "flex", gap: "4px" }}>
       <WikipediaLink
         appId={wikiData.appId}
-        wikipediaUrl={wikiData.wikipediaUrl}
+        url={wikiData.wikipediaUrl}
         otherClass="btn tooltipped tooltipped-n"
       />
       {wikiData.independentGroups.map((group, idx) => (

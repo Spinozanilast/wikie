@@ -1,12 +1,7 @@
 import { SiSteam } from "@icons-pack/react-simple-icons";
+import { ImmediateWikiLinkComponentProps } from "./types";
 
-type SteamLinkProps = {
-  appId: string;
-  url: string;
-  otherClass?: string;
-};
-
-function SteamLink({ appId, url, otherClass }: SteamLinkProps) {
+function SteamLink({ appId, url, otherClass }: ImmediateWikiLinkComponentProps) {
   return (
     <a
       id={`wikie-steamdb-${appId}`}

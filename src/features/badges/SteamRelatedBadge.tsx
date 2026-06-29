@@ -27,7 +27,7 @@ function SteamRelatedBadge({ badgeFor, wikiData, displayMode }: SteamBadgeProps)
           ) : (
             <SteamLink appId={wikiData.appId} url={wikiData.steamUrl} />
           )}
-          <WikipediaLink appId={wikiData.appId} wikipediaUrl={wikiData.wikipediaUrl} />
+          <WikipediaLink appId={wikiData.appId} url={wikiData.wikipediaUrl} />
         </div>
         <IndependentWikiLinks
           appName={wikiData.appName}
@@ -52,7 +52,7 @@ function SteamRelatedBadge({ badgeFor, wikiData, displayMode }: SteamBadgeProps)
           ) : (
             <SteamLink appId={wikiData.appId} url={wikiData.steamUrl} />
           )}
-          <WikipediaLink appId={wikiData.appId} wikipediaUrl={wikiData.wikipediaUrl} />
+          <WikipediaLink appId={wikiData.appId} url={wikiData.wikipediaUrl} />
         </div>
       </div>
       <IndependentWikiLinks

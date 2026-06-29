@@ -1,19 +1,14 @@
 import { SiWikipedia } from "@icons-pack/react-simple-icons";
+import { WikiLinkComponentProps } from "./types";
 
-type WikipediaLinkProps = {
-  appId: string;
-  wikipediaUrl: string | null;
-  otherClass?: string;
-};
-
-function WikipediaLink({ appId, wikipediaUrl, otherClass }: WikipediaLinkProps) {
-  if (!wikipediaUrl) return null;
+function WikipediaLink({ appId, url, otherClass }: WikiLinkComponentProps) {
+  if (!url) return null;
 
   return (
     <a
       id={`wikie-wikipedia-${appId}`}
       className={otherClass ? otherClass : "wikie-badge wikipedia"}
-      href={wikipediaUrl}
+      href={url}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Wikipedia"
