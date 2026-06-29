@@ -26,7 +26,7 @@ function getSystemPrefers(): boolean {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>();
+  const [theme, setTheme] = useState<Theme>("system");
 
   useEffect(() => {
     getInitialTheme().then((stored) => {
@@ -35,7 +35,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (theme === undefined) return;
     (async () => {
       await applyTheme(theme);
     })();

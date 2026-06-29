@@ -1,24 +1,16 @@
 import { SiSteamdb } from "@icons-pack/react-simple-icons";
 
-import { WikisHosts } from "~/lib/hosts";
-import { useAppWikis } from "~/contexts/WikisContext";
+type SteamDbLinkProps = {
+  appId: string;
+  url: string;
+};
 
-function SteamDbLink() {
-  const { appId, addWiki } = useAppWikis();
-
-  useEffect(() => {
-    addWiki({
-      title: "SteamDB",
-      host: WikisHosts.SteamDB,
-      url: `https://steamdb.info/app/${appId}/charts`,
-    });
-  }, []);
-
+function SteamDbLink({ appId, url }: SteamDbLinkProps) {
   return (
     <a
       id={`wikie-steamdb-${appId}`}
       className="wikie-badge steamdb"
-      href={`https://steamdb.info/app/${appId}/charts`}
+      href={url}
       target="_blank"
       rel="noopener noreferrer"
     >

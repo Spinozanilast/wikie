@@ -5,25 +5,55 @@ import WikipediaLink from "~/features/wikis/WikipediaLink";
 import IndependentWikiLinks from "~/features/wikis/IndependentWikiLinks";
 import SteamDbLink from "~/features/wikis/SteamDbLink";
 
-import { useAppWikis } from "~/contexts/WikisContext";
+import { DisplayMode } from "~/backend/settings/settings";
+import type { GameWikiData } from "~/backend/wikis/gameWikiData";
 
 type SteamBadgeProps = {
   badgeFor: "steam" | "steamdb";
+  wikiData: GameWikiData;
+  displayMode: DisplayMode;
 };
 
-function SteamRelatedBadge({ badgeFor }: SteamBadgeProps) {
-  const { appId, appName, wikisCount } = useAppWikis();
-  return (
-    <div id={`wikie-badge-container-${appId}`} className="wikie-badge-container">
-      <div>
-        <Logo className="logo" /> <span className="app-name">{appName}</span>{" "}
-        <span className="wikis">wikis ({wikisCount}):</span>
+function SteamRelatedBadge({ badgeFor, wikiData, displayMode }: SteamBadgeProps) {
+  if (displayMode === "inline") {
+    return (
+      <div id={`wikie-badge-inline-container-${wikiData.appId}`} className="wikie-inline-badge">
         <div className="base-wikis-container">
-          {badgeFor === "steam" ? <SteamDbLink /> : <SteamLink />}
-          <WikipediaLink />
+          {badgeFor === "steam" ? (
+            <SteamDbLink appId={wikiData.appId} url={wikiData.steamDbUrl} />
+          ) : (
+            <SteamLink appId={wikiData.appId} url={wikiData.steamUrl} />
+          )}
+          <WikipediaLink appId={wikiData.appId} wikipediaUrl={wikiData.wikipediaUrl} />
+        </div>
+        <IndependentWikiLinks
+          appName={wikiData.appName}
+          groups={wikiData.independentGroups}
+          renderAsMinified
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div id={`wikie-badge-container-${wikiData.appId}`} className="wikie-badge-container">
+      <div>
+        <Logo className="logo" /> <span className="app-name">{wikiData.appName}</span>{" "}
+        <span className="wikis">wikis ({wikiData.wikis.length}):</span>
+        <div className="base-wikis-container">
+          {badgeFor === "steam" ? (
+            <SteamDbLink appId={wikiData.appId} url={wikiData.steamDbUrl} />
+          ) : (
+            <SteamLink appId={wikiData.appId} url={wikiData.steamUrl} />
+          )}
+          <WikipediaLink appId={wikiData.appId} wikipediaUrl={wikiData.wikipediaUrl} />
         </div>
       </div>
-      <IndependentWikiLinks />
+      <IndependentWikiLinks
+        appName={wikiData.appName}
+        groups={wikiData.independentGroups}
+        renderAsMinified={false}
+      />
     </div>
   );
 }

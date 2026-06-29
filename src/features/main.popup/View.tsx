@@ -14,12 +14,10 @@ import { GearSixIcon } from "@phosphor-icons/react/dist/csr/GearSix";
 
 function OpenWikisList() {
   const [openWikis, setOpenWikis] = useState<OpenWikiPage[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     openWikisPagesItem.getValue().then((wikis) => {
       setOpenWikis(wikis);
-      setIsLoading(false);
     });
 
     const unwatch = openWikisPagesItem.watch((newWikis) => {
@@ -28,8 +26,6 @@ function OpenWikisList() {
 
     return () => unwatch();
   }, []);
-
-  if (isLoading) return null;
 
   if (openWikis.length === 0) {
     return (

@@ -76,7 +76,7 @@ const displayModes: {
     icon: SelectionSlashIcon,
   },
   {
-    mode: "shadow-inline",
+    mode: "inline",
     title: "Inline in page",
     icon: TextAlignLeftIcon,
   },

@@ -1,6 +1,6 @@
 import { storage } from "@wxt-dev/storage";
 
-export type DisplayMode = "shadow" | "shadow-inline";
+export type DisplayMode = "shadow" | "inline";
 
 export type StylesSettings = {
   CornerPosition: "left-top" | "right-top" | "right-bottom" | "left-bottom";
@@ -44,5 +44,5 @@ export function applyCornerPosition(
 }
 
 export function applyDisplayMode(wrapper: HTMLElement, mode: DisplayMode) {
-  wrapper.classList.toggle("inline-mode", mode === "shadow-inline");
+  wrapper.classList.toggle("inline-mode", mode === "inline");
 }

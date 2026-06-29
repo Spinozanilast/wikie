@@ -1,4 +1,3 @@
-import { independentWikisItem } from "~/backend/wikis/independents";
 import {
   SiFandom,
   SiFandomHex,
@@ -6,18 +5,7 @@ import {
   SiWikidotggHex,
 } from "@icons-pack/react-simple-icons";
 import { CheckFatIcon } from "@phosphor-icons/react/dist/csr/CheckFat";
-import { useAppWikis } from "@/contexts/WikisContext";
-
-type WikiInfo = {
-  url: string;
-  title: string;
-  host: string;
-};
-
-type WikiGroup = {
-  mainWiki: WikiInfo;
-  origins: WikiInfo[];
-};
+import type { IndependentWikiGroup } from "~/backend/wikis/gameWikiData";
 
 type Host = "wiki.gg" | "fandom";
 
@@ -32,95 +20,88 @@ function getHostIcon(host: Host, size: number = 24) {
   }
 }
 
-function IndependentWikiLinks() {
-  const { appName, addWiki } = useAppWikis();
-  const appNameProcessed = useMemo(() => appName.replace(" ", "").toLowerCase(), []);
+type IndependentWikiLinksProps = {
+  appName: string;
+  groups: IndependentWikiGroup[];
+  renderAsMinified: boolean;
+};
 
-  const [wikiGroups, setWikiGroups] = useState<WikiGroup[]>([]);
+function IndependentWikiLinks({
+  appName,
+  groups,
+  renderAsMinified,
+}: IndependentWikiLinksProps) {
+  if (groups.length === 0) return null;
 
-  useEffect(() => {
-    const populateData = async () => {
-      try {
-        const collection = await independentWikisItem.getValue();
-        if (!collection || (collection && Object.keys(collection).length === 0)) return;
-
-        const gameEntriesKeys = Object.keys(collection).filter((key) =>
-          key.startsWith(`en-${appNameProcessed}`),
-        );
-
-        const wikiEntries = gameEntriesKeys.map((key) => collection[key]);
-        const foundedWikiGroups: WikiGroup[] = [];
-
-        for (const wikiEntry of wikiEntries) {
-          if (!wikiEntry) return;
-          const newWikiGroup: WikiGroup = {
-            mainWiki: {
-              url: `https://${wikiEntry?.destinationBaseUrl}`,
-              title: wikiEntry?.originsLabel || "",
-              host: wikiEntry?.destinationHost || "",
-            },
-            origins: [],
-          };
-          addWiki(newWikiGroup.mainWiki);
-
-          if (wikiEntry.origins.length !== 0) {
-            wikiEntry.origins.forEach((origin) => {
-              const originWiki = {
-                url: `https://${origin?.originBaseUrl}`,
-                title: origin?.origin || "",
-                host: origin?.originBaseUrl.match(/\.(\S+)\.com/)?.[1] || "",
-              };
-
-              addWiki(originWiki);
-              newWikiGroup.origins.push(originWiki);
-            });
-          }
-
-          foundedWikiGroups.push(newWikiGroup);
-        }
-
-        setWikiGroups(foundedWikiGroups);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    populateData();
-  }, []);
-
-  if (wikiGroups?.length === 0) return null;
+  const [firstGroup, ...restGroups] = groups;
 
   return (
-    <div id={`wikis-${appName}`} className="independent-wiki-links">
-      {wikiGroups.map((wikiGroup, index) => (
-        <div key={index} className="wiki-group-container">
-          <h1>{wikiGroup.mainWiki.title}s:</h1>
-          <div>
+    <>
+      <div className="independent-wiki-first-group">
+        <a
+          className="wikie-badge"
+          title={`${firstGroup.mainWiki.title} (independent official wiki)`}
+          href={firstGroup.mainWiki.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {getHostIcon(firstGroup.mainWiki.host as Host)}
+        </a>
+        {firstGroup.origins.map((origin, idx) => {
+          return (
             <a
-              title={`${wikiGroup.mainWiki.title} (main)`}
-              href={wikiGroup.mainWiki.url}
+              className="wikie-badge"
+              title={`${origin.title} (origin)`}
+              href={origin.url}
               target="_blank"
               rel="noopener noreferrer"
+              key={idx}
             >
-              {getHostIcon(wikiGroup.mainWiki.host as Host)}
+              {getHostIcon(origin.host as Host)}
             </a>
-            <div className="origins-container">
-              {wikiGroup.origins.map((origin, originIndex) => (
+          );
+        })}
+      </div>
+      {restGroups.length > 0 && (
+        <div
+          id={`wikis-${appName}`}
+          className={
+            renderAsMinified
+              ? "independent-wiki-links-minified"
+              : "independent-wiki-links"
+          }
+        >
+          {restGroups.map((group, index) => (
+            <div key={index} className="wiki-group-container">
+              <h1>{group.mainWiki.title}s:</h1>
+              <div>
                 <a
-                  key={originIndex}
-                  title={`${origin.title} (${origin.host})`}
-                  href={origin.url}
+                  title={`${group.mainWiki.title} (main)`}
+                  href={group.mainWiki.url}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {getHostIcon(origin.host as Host)}
+                  {getHostIcon(group.mainWiki.host as Host)}
                 </a>
-              ))}
+                <div className="origins-container">
+                  {group.origins.map((origin, originIndex) => (
+                    <a
+                      key={originIndex}
+                      title={`${origin.title} (${origin.host})`}
+                      href={origin.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {getHostIcon(origin.host as Host)}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
-      ))}
-    </div>
+      )}
+    </>
   );
 }
 

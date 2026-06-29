@@ -4,59 +4,93 @@ import ReactDOM from "react-dom/client";
 
 import { applyCornerPosition, settingsItem } from "~/backend/settings/settings.ts";
 import { themeItem } from "~/lib/theme";
-import { AppWikisInfoStore } from "~/contexts/WikisContext.tsx";
+import { renderUiVariantsOnDisplayModeChange } from "~/lib/display.ts";
+import { WikiDataService } from "~/backend/wikis/gameWikiData.ts";
+import { reportWikis } from "~/backend/messaging/wikis.ts";
+import { extractSteamUrlAppIdAndName } from "~/lib/url.ts";
 import SteamBadge from "./SteamBadge.tsx";
 
 import "~/assets/styles.css";
-import { renderUiVariantsOnDisplayModeChange } from "~/lib/display.ts";
 
 export default defineContentScript({
   matches: ["*://store.steampowered.com/app/*"],
   cssInjectionMode: "ui",
   async main(ctx) {
-    await renderUiVariantsOnDisplayModeChange(async () =>
-      createShadowRootUi(ctx, {
-        name: "wikie-steam",
-        position: "inline",
-        anchor: "body",
-        onMount: (container) => {
-          const wrapper = document.createElement("div");
+    const data = extractSteamUrlAppIdAndName();
+    if (!data) return;
 
-          container.append(wrapper);
+    const wikiData = await WikiDataService.precompute(data.appId, data.name);
 
-          const root = ReactDOM.createRoot(wrapper);
+    reportWikis({
+      appId: data.appId,
+      appName: data.name,
+      source: "steam",
+      wikisFoundCount: wikiData.wikis.length,
+      wikis: wikiData.wikis,
+    });
 
-          themeItem.getValue().then((newTheme) => {
-            wrapper.classList.toggle("dark", newTheme === "dark");
-          });
+    await renderUiVariantsOnDisplayModeChange(
+      ctx,
+      async () =>
+        createShadowRootUi(ctx, {
+          name: "wikie-steam",
+          position: "inline",
+          anchor: "body",
+          onMount: (container) => {
+            const wrapper = document.createElement("div");
 
-          settingsItem.getValue().then((settings) => {
-            applyCornerPosition(wrapper, settings.CornerPosition);
-          });
+            container.append(wrapper);
 
-          root.render(
-            <AppWikisInfoStore>
-              <SteamBadge />
-            </AppWikisInfoStore>,
-          );
+            const root = ReactDOM.createRoot(wrapper);
 
-          const unwatchTheme = themeItem.watch((newTheme) => {
-            wrapper.classList.toggle("dark", newTheme === "dark");
-          });
+            themeItem.getValue().then((newTheme) => {
+              wrapper.classList.toggle("dark", newTheme === "dark");
+            });
 
-          const unwatchSettings = settingsItem.watch((settings) => {
-            applyCornerPosition(wrapper, settings.CornerPosition);
-          });
+            settingsItem.getValue().then((settings) => {
+              applyCornerPosition(wrapper, settings.CornerPosition);
+            });
 
-          return { root, wrapper, unwatchTheme, unwatchSettings };
-        },
-        onRemove: (elements) => {
-          elements?.root.unmount();
-          elements?.wrapper.remove();
-          elements?.unwatchTheme?.();
-          elements?.unwatchSettings?.();
-        },
-      }),
+            root.render(
+              <SteamBadge wikiData={wikiData} displayMode="shadow" />,
+            );
+
+            const unwatchTheme = themeItem.watch((newTheme) => {
+              wrapper.classList.toggle("dark", newTheme === "dark");
+            });
+
+            const unwatchSettings = settingsItem.watch((settings) => {
+              applyCornerPosition(wrapper, settings.CornerPosition);
+            });
+
+            return { root, wrapper, unwatchTheme, unwatchSettings };
+          },
+          onRemove: (elements) => {
+            elements?.root.unmount();
+            elements?.wrapper.remove();
+            elements?.unwatchTheme?.();
+            elements?.unwatchSettings?.();
+          },
+        }),
+      async () =>
+        createShadowRootUi(ctx, {
+          name: "wikie-steam-inline",
+          position: "inline",
+          anchor: ".apphub_HeaderStandardTop",
+          onMount: (wrapper) => {
+            const root = ReactDOM.createRoot(wrapper);
+
+            root.render(
+              <SteamBadge wikiData={wikiData} displayMode="inline" />,
+            );
+
+            return { root, wrapper };
+          },
+          onRemove: (elements) => {
+            elements?.root.unmount();
+            elements?.wrapper.remove();
+          },
+        }),
     );
   },
 });

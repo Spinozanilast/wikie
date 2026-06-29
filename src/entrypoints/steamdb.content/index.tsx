@@ -7,24 +7,40 @@ import { themeItem } from "~/lib/theme";
 import SteamDbBadge from "./SteamDbBadge.tsx";
 
 import "~/assets/styles.css";
-import { AppWikisInfoStore } from "@/contexts/WikisContext.tsx";
+import { WikiDataService } from "@/backend/wikis/gameWikiData.ts";
+import { reportWikis } from "@/backend/messaging/wikis.ts";
+import { extractSteamUrlAppId } from "@/lib/url.ts";
 import { renderUiVariantsOnDisplayModeChange } from "@/lib/display.ts";
 
 export default defineContentScript({
   matches: ["*://steamdb.info/app/*"],
   cssInjectionMode: "ui",
   async main(ctx) {
-    renderUiVariantsOnDisplayModeChange(() =>
+    const appId = extractSteamUrlAppId();
+    const appName =
+      document.body.querySelector(
+        '.pagehead-title h1[itemprop="name"]',
+      )?.textContent ?? "";
+
+    if (!appId) return;
+
+    const wikiData = await WikiDataService.precompute(appId, appName);
+
+    reportWikis({
+      appId,
+      appName,
+      source: "steamdb",
+      wikisFoundCount: wikiData.wikis.length,
+      wikis: wikiData.wikis,
+    });
+
+    renderUiVariantsOnDisplayModeChange(ctx, () =>
       createShadowRootUi(ctx, {
         name: "wikie-steam",
         position: "inline",
         anchor: "body",
         onMount: (container) => {
           const wrapper = document.createElement("div");
-
-          const appName = document.body.querySelector(
-            '.pagehead-title h1[itemprop="name"]',
-          )?.textContent;
 
           container.append(wrapper);
 
@@ -38,12 +54,8 @@ export default defineContentScript({
             applyCornerPosition(wrapper, settings.CornerPosition);
           });
 
-          if (!appName) return;
-
           root.render(
-            <AppWikisInfoStore>
-              <SteamDbBadge appName={appName} />
-            </AppWikisInfoStore>,
+            <SteamDbBadge wikiData={wikiData} displayMode="shadow" />,
           );
 
           const unwatchTheme = themeItem.watch((newTheme) => {

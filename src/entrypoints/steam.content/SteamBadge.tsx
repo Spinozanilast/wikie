@@ -1,33 +1,20 @@
-import { useEffect } from "react";
-
-import { extractSteamUrlAppIdAndName } from "~/lib/url";
-import { reportWikis } from "~/backend/messaging/wikis";
-import { useAppWikis } from "~/contexts/WikisContext";
 import SteamRelatedBadge from "~/features/badges/SteamRelatedBadge";
+import { type DisplayMode } from "~/backend/settings/settings";
+import type { GameWikiData } from "~/backend/wikis/gameWikiData";
 
-function SteamBadge() {
-  const { appId, appName, getWikis, wikisCount, setAppInfo } = useAppWikis();
+type SteamBadgeProps = {
+  wikiData: GameWikiData;
+  displayMode: DisplayMode;
+};
 
-  useEffect(() => {
-    const data = extractSteamUrlAppIdAndName();
-    if (!data) return;
-    setAppInfo(data.appId, data.name);
-  }, []);
-
-  useEffect(() => {
-    if (!appId) return;
-    reportWikis({
-      appId,
-      appName,
-      source: "steam",
-      wikisFoundCount: wikisCount,
-      wikis: getWikis(),
-    });
-  }, [appId, appName, wikisCount]);
-
-  if (!appId) return null;
-
-  return <SteamRelatedBadge badgeFor="steam" />;
+function SteamBadge({ wikiData, displayMode }: SteamBadgeProps) {
+  return (
+    <SteamRelatedBadge
+      badgeFor="steam"
+      wikiData={wikiData}
+      displayMode={displayMode}
+    />
+  );
 }
 
 export default SteamBadge;

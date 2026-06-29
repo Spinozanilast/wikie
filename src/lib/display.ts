@@ -1,3 +1,4 @@
+import { type ContentScriptContext } from "wxt/utils/content-script-context";
 import { type DisplayMode, displayModeItem } from "~/backend/settings/settings";
 
 export type UiShadowRootVariantReturnType = Awaited<
@@ -9,16 +10,16 @@ export type UiIntegratedVariantReturnType = Awaited<
 
 export type UIEntryVariant =
   | UiShadowRootVariantReturnType
-  | UiIntegratedVariantReturnType
-  | undefined;
+  | UiIntegratedVariantReturnType;
 
 export async function renderUiVariantsOnDisplayModeChange(
-  shadowRootUiCreateCallback: () => Promise<UiShadowRootVariantReturnType>,
-  integratedUiCreateCallback?: () => Promise<UiIntegratedVariantReturnType>,
-) {
-  let lastUIEntry: UIEntryVariant;
+  ctx: ContentScriptContext,
+  shadowDisplayModeUiCallback: () => Promise<UIEntryVariant>,
+  inlineDisplayModeUiCallback?: () => Promise<UIEntryVariant>,
+): Promise<void> {
+  let lastUIEntry: UIEntryVariant | undefined;
 
-  const watchDisplayMode = displayModeItem.watch((currentDisplayMode) => {
+  const unwatchDisplayMode = displayModeItem.watch((currentDisplayMode) => {
     displayUI(currentDisplayMode);
   });
 
@@ -28,7 +29,13 @@ export async function renderUiVariantsOnDisplayModeChange(
     }
 
     if (displayMode === "shadow") {
-      const ui = await shadowRootUiCreateCallback();
+      const ui = await shadowDisplayModeUiCallback();
+
+      lastUIEntry = ui;
+      lastUIEntry.mount();
+    } else {
+      if (!inlineDisplayModeUiCallback) return;
+      const ui = await inlineDisplayModeUiCallback();
 
       lastUIEntry = ui;
       lastUIEntry.mount();
@@ -37,4 +44,8 @@ export async function renderUiVariantsOnDisplayModeChange(
 
   const firstRenderDisplayMode = await displayModeItem.getValue();
   await displayUI(firstRenderDisplayMode);
+
+  ctx.onInvalidated(() => {
+    unwatchDisplayMode();
+  });
 }
